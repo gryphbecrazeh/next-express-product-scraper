@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Button, InputGroup, Input, Form, FormGroup } from "reactstrap";
+import {
+	Button,
+	InputGroup,
+	Input,
+	Form,
+	FormGroup,
+	InputGroupAddon
+} from "reactstrap";
 import axios from "axios";
 
 class Scraper extends Component {
@@ -20,10 +27,16 @@ class Scraper extends Component {
 				details.forEach(detail => {
 					let key = detail
 						.querySelector("dt")
-						.innerText.match(new RegExp(/[\w \d]+/), "gmi");
+						.innerText.match(new RegExp(/[\w \d]+/), "gmi")
+						.toString()
+						.replace(/ +/gim, " ")
+						.replace(/^ /gim, "");
 					let val = detail
 						.querySelector("dd")
-						.innerText.match(new RegExp(/[\w \d]+/), "gmi");
+						.innerText.match(new RegExp(/[\w \d]+/), "gmi")
+						.toString()
+						.replace(/ +/gim, " ")
+						.replace(/^ /gim, "");
 
 					product[key] = val;
 				});
@@ -50,9 +63,11 @@ class Scraper extends Component {
 								name="url"
 								onChange={this.onChange}
 							></Input>
-							<Button type="button" onClick={this.scrape}>
-								Test
-							</Button>
+							<InputGroupAddon addonType="append">
+								<Button color="primary" type="button" onClick={this.scrape}>
+									Scrape
+								</Button>
+							</InputGroupAddon>
 						</InputGroup>
 					</FormGroup>
 				</Form>
