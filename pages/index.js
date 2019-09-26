@@ -1,5 +1,5 @@
 // ---------------------------------------------------React
-import React from "react";
+import React, { useState } from "react";
 // ---------------------------------------------------Next
 import Head from "next/head";
 import Link from "next/link";
@@ -11,10 +11,14 @@ import { Container, Row, Col } from "reactstrap";
 import Scraper from "../components/Scraper";
 import ContentManipulator from "../components/ContentManipulator";
 export default () => {
+	const [urlInput, setUrlInput] = useState(null);
+	let handleScrape = output => {
+		setUrlInput(output);
+	};
 	return (
 		<div>
 			<Head>
-				<title>Test App</title>
+				<title>Content Spinner App</title>
 				<link
 					rel="stylesheet"
 					href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -39,9 +43,11 @@ export default () => {
 						width: "100%"
 					}}
 				>
-					{/* <Col><Scraper /></Col> */}
 					<Col>
-						<ContentManipulator />
+						<Scraper handler={handleScrape} />
+					</Col>
+					<Col>
+						<ContentManipulator scrapedContent={urlInput} />
 					</Col>
 				</Row>
 			</Container>
