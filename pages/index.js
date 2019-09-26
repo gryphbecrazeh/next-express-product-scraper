@@ -9,6 +9,7 @@ import { Container, Row, Col } from "reactstrap";
 // import "bootstrap/dist/css/bootstrap.css";
 // ---------------------------------------------------Components
 import Scraper from "../components/Scraper";
+import ContentManipulator from "../components/ContentManipulator";
 export default () => {
 	return (
 		<div>
@@ -38,8 +39,9 @@ export default () => {
 						width: "100%"
 					}}
 				>
+					{/* <Col><Scraper /></Col> */}
 					<Col>
-						<Scraper />
+						<ContentManipulator />
 					</Col>
 				</Row>
 			</Container>
