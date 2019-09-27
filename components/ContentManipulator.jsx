@@ -12,37 +12,38 @@ import {
 // ---------------------------------------------------Components
 import InputComponent from "../components/Input";
 import OutputComponent from "../components/Output";
-
+// ---------------------------------------------------Scripts
+import ContentConstructor from "../scripts/templates/templates";
 export default function ContentManipulator({}) {
-	const [inputContent, updateInput] = useState("");
+	const [inputContent, updateInput] = useState({
+		brand: null,
+		sku: null,
+		content: null
+	});
 	const [outputContent, setOutput] = useState("");
 	let handleUpdate = e => {
-		updateInput(e.target.value);
+		updateInput({ ...inputContent, [e.target.name]: e.target.value });
 	};
-	let handleOutput = e => {
-		setOutput(inputContent);
+	let handleOutput = () => {
+		let output = new ContentConstructor(inputContent);
+		setOutput(output);
 	};
 	return (
-		<div>
-			<Container>
-				<Row>
-					<Col>
-						<InputGroup>
-							<InputComponent update={handleUpdate} />
-							<InputGroupAddon addonType="append">
-								<Button color="primary" onClick={handleOutput}>
-									Render
-								</Button>
-							</InputGroupAddon>
-						</InputGroup>
-					</Col>
-				</Row>
+		<Container>
+			<Row>
+				<Col>
+					<InputComponent update={handleUpdate} submit={handleOutput} />
+				</Col>
+			</Row>
+			{!outputContent ? (
+				""
+			) : (
 				<Row>
 					<Col>
 						<OutputComponent output={outputContent} />
 					</Col>
 				</Row>
-			</Container>
-		</div>
+			)}
+		</Container>
 	);
 }

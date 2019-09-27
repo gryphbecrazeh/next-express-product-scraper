@@ -9,7 +9,7 @@ export default function OutputComponent({ output }) {
 	return (
 		<Container>
 			<Row>
-				<Col>{output}</Col>
+				<Col>{output.ready ? output.getLongDescription() : null}</Col>
 			</Row>
 		</Container>
 	);

@@ -16,7 +16,7 @@ export default () => {
 		setUrlInput(output);
 	};
 	return (
-		<div>
+		<div className="bg-dark text-white-50">
 			<Head>
 				<title>Content Spinner App</title>
 				<link
@@ -35,6 +35,18 @@ export default () => {
 				</style>
 			</Head>
 			<Container>
+				{/* <Row
+					style={{
+						justifyContent: "center",
+						alignItems: "center",
+						height: "25vh",
+						width: "100%"
+					}}
+				>
+					<Col>
+						<Scraper handler={handleScrape} />
+					</Col>
+				</Row> */}
 				<Row
 					style={{
 						justifyContent: "center",
@@ -43,9 +55,6 @@ export default () => {
 						width: "100%"
 					}}
 				>
-					<Col>
-						<Scraper handler={handleScrape} />
-					</Col>
 					<Col>
 						<ContentManipulator scrapedContent={urlInput} />
 					</Col>
