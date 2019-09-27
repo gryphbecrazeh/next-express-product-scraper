@@ -11,13 +11,19 @@ import {
 	Button,
 	Card,
 	CardHeader,
+	Alert,
 	CardBody,
 	CardFooter
 } from "reactstrap";
 import { relative } from "path";
 // ---------------------------------------------------Components
 
-export default function InputComponent({ update, submit }) {
+export default function InputComponent({
+	alert,
+	update,
+	submit,
+	scrape = null
+}) {
 	return (
 		<Card
 			// className="text-black-50"
@@ -34,6 +40,15 @@ export default function InputComponent({ update, submit }) {
 			<CardBody>
 				<Container>
 					<FormGroup>
+						{!alert ? null : (
+							<Row>
+								<Col>
+									<Alert
+										color={alert.success ? "success" : "warning"}
+									>{`${alert.alert}`}</Alert>
+								</Col>
+							</Row>
+						)}
 						<Row>
 							<Col>
 								<Input
@@ -62,6 +77,7 @@ export default function InputComponent({ update, submit }) {
 									style={{ minHeight: "5em" }}
 									placeholder="Input text here..."
 									onChange={update}
+									value={scrape !== null ? scrape.content : null}
 								></Input>
 							</Col>
 						</Row>

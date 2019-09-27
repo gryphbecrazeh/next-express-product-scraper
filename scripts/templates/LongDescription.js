@@ -1,18 +1,60 @@
-export default function LongDescription({ sentences, bullets, brand, sku }) {
+export default function LongDescription({
+	sentences,
+	bullets,
+	shortText,
+	brand,
+	sku,
+	width,
+	height,
+	depth
+}) {
+	// Return the string if all required fields are available
+	let returnIf = (text, array = []) => {
+		// let args = { ...arguments[0] };
+		return array.filter(
+			item => item === undefined || item === null || item === ""
+		).length === 0
+			? text
+			: "";
+	};
+	let descHead = `${
+		brand && sku
+			? `<p>This ${brand} ${sku} is an Oven with ${[...shortText].join("")}</p>`
+			: ""
+	}`;
+	let descDetail = `
+        <p><strong>Margaritum Machine Details:</strong></p>
+        <ul class="disc">${[...bullets].join("")}</ul>`;
+	let descIntro = `        <p>What you'll be getting from this Spaceman product is a Margaritum Machine, ${width} inch from left to right, Margarita Machine Product, ${[
+		...shortText
+	].join("")}</p>
+`;
+	let descDims = `
+            <p><strong>Product Dimensions:</strong></p>
+        <ul class="bullet">
+        <li>Left to Right: ${width} in.</li>
+        <li>Front to Back: ${depth} in.</li>
+        <li>Height: ${height} in.</li>
+        </ul>`;
+	let descStandardFeatures = `        <strong>STANDARD FEATURES</strong>
+        <br />
+        <ul class="disc">${[...bullets].join("")}</ul>
+`;
 	let description = `
-        ${
-					brand && sku
-						? `            <p>This ${brand} ${sku} is an Oven with</p>
-`
-						: ""
-				}
-            <p>${String([...sentences])}</p>
-            <strong>STANDARD FEATURES</strong>
-            <br />
-            <ul class="disc">${String([...bullets])}</ul>
+        <p>${[...sentences].join("")}</p>
     `;
-
-	return description;
+	// Render with Requirements to automatically return the correct template based on available information
+	let renderArray = [
+		{ text: descHead, req: [brand, sku, shortText] },
+		{ text: descDetail, req: [bullets] },
+		{ text: descIntro, req: [width, shortText] },
+		{ text: descDims, req: [width, depth, height] },
+		{ text: descStandardFeatures, req: [bullets] },
+		{ text: description, req: [sentences] }
+	];
+	return `${renderArray
+		.map(item => returnIf(item.text, [...item.req]))
+		.join("")}`;
 }
 
 /*

@@ -1,79 +1,70 @@
-import React, { Component } from "react";
-import {
-	Button,
-	InputGroup,
-	Input,
-	Form,
-	FormGroup,
-	InputGroupAddon
-} from "reactstrap";
+import React, { useState } from "react";
+import { Button, InputGroup, Input, InputGroupAddon } from "reactstrap";
 import axios from "axios";
 
-class Scraper extends Component {
-	state = {
-		url: "",
-		product: {}
-	};
-	scrape = e => {
+export default function Scraper({ handler }) {
+	let [url, setUrl] = useState(null);
+	let [product, updateProduct] = useState({});
+	const scrape = e => {
 		e.preventDefault();
-		axios.post("/fetch", { target: this.state.url }).then(res => {
+		axios.post("/fetch", { target: url }).then(res => {
 			let el = document.createElement("html");
 			el.innerHTML = res.data.response;
 			let body = el.querySelector("body");
-			let overview = body.querySelector("div.widget-detail-overview");
-			let details = Array.from(overview.querySelectorAll("dl"));
-			let product = {};
-			if (details) {
-				details.forEach(detail => {
-					let key = detail
-						.querySelector("dt")
-						.innerText.match(new RegExp(/[\w \d]+/), "gmi")
-						.toString()
-						.replace(/ +/gim, " ")
-						.replace(/^ /gim, "");
-					let val = detail
-						.querySelector("dd")
-						.innerText.match(new RegExp(/[\w \d]+/), "gmi")
-						.toString()
-						.replace(/ +/gim, " ")
-						.replace(/^ /gim, "");
-
-					product[key] = val;
-				});
-			}
-			product.title = body.querySelector("h1.ma-title").innerText;
-			// this.setState({ product: product }, () => console.log(this.state));
-			console.log(product);
+			let title = body.querySelector(".product-name");
+			console.log(title);
+			updateProduct({ ...product, title: title });
+			handler({ product, content: body.innerText });
 		});
 	};
-	onChange = e => {
-		this.setState({ [e.target.name]: e.target.value });
+	const onChange = e => {
+		setUrl(e.target.value);
 	};
-
-	render() {
-		let { title } = this.state.product;
-		return (
-			<div>
-				<Form>
-					<FormGroup>
-						<InputGroup>
-							<Input
-								type="text"
-								placeholder="Enter web address here..."
-								name="url"
-								onChange={this.onChange}
-							></Input>
-							<InputGroupAddon addonType="append">
-								<Button color="primary" type="button" onClick={this.scrape}>
-									Scrape
-								</Button>
-							</InputGroupAddon>
-						</InputGroup>
-					</FormGroup>
-				</Form>
-				<div>{title ? title : ""}</div>
-			</div>
-		);
-	}
+	return (
+		<div style={{ width: "80vw" }}>
+			<InputGroup>
+				<Input
+					type="text"
+					placeholder="Enter web address here..."
+					name="url"
+					onChange={onChange}
+				></Input>
+				<InputGroupAddon addonType="append">
+					<Button color="primary" type="button" onClick={scrape}>
+						Scrape
+					</Button>
+				</InputGroupAddon>
+			</InputGroup>
+		</div>
+	);
 }
-export default Scraper;
+
+/*
+// Alibaba Config
+			let body = el.querySelector("body");
+			let overview = body.querySelector("div.widget-detail-overview");
+			if (!overview) return null;
+			if (overview.querySelectorAll("dl")) {
+				let details = Array.from(overview.querySelectorAll("dl"));
+				let newProduct = {};
+				if (details) {
+					details.forEach(detail => {
+						let key = detail
+							.querySelector("dt")
+							.innerText.match(new RegExp(/[\w \d]+/), "gmi")
+							.toString()
+							.replace(/ +/gim, " ")
+							.replace(/^ /gim, "");
+						let val = detail
+							.querySelector("dd")
+							.innerText.match(new RegExp(/[\w \d]+/), "gmi")
+							.toString()
+							.replace(/ +/gim, " ")
+							.replace(/^ /gim, "");
+						product[key] = val;
+						updateProduct({ ...newProduct, ...product });
+					});
+				}
+			}
+			let title = body.querySelector("h1.ma-title").innerText;
+*/

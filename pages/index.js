@@ -34,19 +34,20 @@ export default () => {
 					`}
 				</style>
 			</Head>
+			<div
+				style={{
+					position: "fixed",
+					top: "20px",
+					width: "100%",
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center"
+				}}
+			>
+				<Scraper handler={handleScrape} />
+			</div>
+
 			<Container>
-				{/* <Row
-					style={{
-						justifyContent: "center",
-						alignItems: "center",
-						height: "25vh",
-						width: "100%"
-					}}
-				>
-					<Col>
-						<Scraper handler={handleScrape} />
-					</Col>
-				</Row> */}
 				<Row
 					style={{
 						justifyContent: "center",
