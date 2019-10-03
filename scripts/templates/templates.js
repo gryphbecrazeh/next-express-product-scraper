@@ -20,7 +20,8 @@ export default function ContentConstructor({ brand, sku, content }) {
 	this.ready = false;
 	// Initialize the Output object
 	let output = {
-		...arguments[0],
+		// Do not add arguments herem fails when cycling through keys to update
+		// ...arguments[0],
 		sentences: [],
 		bullets: [],
 		shortText: []

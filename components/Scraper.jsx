@@ -8,13 +8,15 @@ export default function Scraper({ handler }) {
 	const scrape = e => {
 		e.preventDefault();
 		axios.post("/fetch", { target: url }).then(res => {
-			let el = document.createElement("html");
-			el.innerHTML = res.data.response;
-			let body = el.querySelector("body");
+			const parser = new DOMParser();
+			let htmlDoc = parser.parseFromString(res.data.response, "text/html");
+			let body = htmlDoc.querySelector("body");
 			let title = body.querySelector(".product-name");
-			console.log(title);
+
+			console.log(htmlDoc);
+			console.log(title.innerText);
 			updateProduct({ ...product, title: title });
-			handler({ product, content: body.innerText });
+			handler({ product, content: body });
 		});
 	};
 	const onChange = e => {

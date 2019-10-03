@@ -13,6 +13,7 @@ import ContentManipulator from "../components/ContentManipulator";
 export default () => {
 	const [urlInput, setUrlInput] = useState(null);
 	let handleScrape = output => {
+		console.log(output);
 		setUrlInput(output);
 	};
 	return (
